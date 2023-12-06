@@ -1,4 +1,5 @@
-const int GAME_BOARD_SIZE = 5;
+#define GAME_BOARD_SIZE 5
+
 bool PLAYER_ARRAY[GAME_BOARD_SIZE * GAME_BOARD_SIZE] = {true, false, false, false, true, false, true, true, false, true, true, false, false, false, true, false, true, true, false, true, false, true, true, false, true};
 bool OPPONENT_ARRAY[GAME_BOARD_SIZE * GAME_BOARD_SIZE] = {true, false, false, false, true, false, true, true, false, true, false, false, false, true, true, false, true, false, true, true, false, false, false, true, false};;
 bool * CURRENT_ARRAY;
@@ -15,11 +16,27 @@ void setup()
   debugCurrentArray();
   changeArray();
   debugCurrentArray();
+
+  // Verify the LED array functionality
+  displayCurrentArray();
+  changeArray();
+  displayCurrentArray();
 }
 
 void loop()
 {
+  
+}
 
+void displayCurrentArray()
+{
+  for(int i = 0 ; i < GAME_BOARD_SIZE ; i++)
+  {
+    for(int j = 0 ; j < GAME_BOARD_SIZE ; j++)
+    {
+      
+    }
+  }
 }
 
 void debugCurrentArray()

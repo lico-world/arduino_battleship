@@ -61,3 +61,11 @@ void changeArray()
   if(isDisplaySubjectThePlayer) CURRENT_ARRAY = PLAYER_ARRAY;
   else CURRENT_ARRAY = OPPONENT_ARRAY;
 }
+
+bool playOn(int x, int y)
+{
+  if (OPPONENT_ARRAY[y + GAME_BOARD_SIZE * x] == true) return false; 
+  
+  OPPONENT_ARRAY[y + GAME_BOARD_SIZE * x] = true;
+  return true;
+}

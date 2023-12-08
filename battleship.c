@@ -21,7 +21,7 @@ void setup()
   screen.clear();
   screen.setBrightness(10);
 
-  CURRENT_ARRAY = PLAYER_ARRAY;
+  CURRENT_ARRAY = isDisplaySubjectThePlayer ? PLAYER_ARRAY : OPPONENT_ARRAY;
 }
 
 void loop()

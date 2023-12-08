@@ -1,51 +1,66 @@
-#define GAME_BOARD_SIZE 5
+#include <Adafruit_NeoPixel.h>
 
-bool PLAYER_ARRAY[GAME_BOARD_SIZE * GAME_BOARD_SIZE] = {true, false, false, false, true, false, true, true, false, true, true, false, false, false, true, false, true, true, false, true, false, true, true, false, true};
-bool OPPONENT_ARRAY[GAME_BOARD_SIZE * GAME_BOARD_SIZE] = {true, false, false, false, true, false, true, true, false, true, false, false, false, true, true, false, true, false, true, true, false, false, false, true, false};;
+#define GAME_BOARD_SIDE_SIZE 3
+#define LED_PIN 6
+
+const int GAME_BOARD_SIZE = GAME_BOARD_SIDE_SIZE * GAME_BOARD_SIDE_SIZE;
+
+bool PLAYER_ARRAY[GAME_BOARD_SIZE] = {true, true, true, false, false, false, true, true, true}; //{true, false, false, false, true, false, true, true, false, true, true, false, false, false, true, false, true, true, false, true, false, true, true, false, true};
+bool OPPONENT_ARRAY[GAME_BOARD_SIZE] = {true, false, true, true, false, true, true, false, true}; //{true, false, false, false, true, false, true, true, false, true, false, false, false, true, true, false, true, false, true, true, false, false, false, true, false};;
 bool * CURRENT_ARRAY;
 
 bool isDisplaySubjectThePlayer = true;
+
+Adafruit_NeoPixel screen(GAME_BOARD_SIZE, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 void setup()
 {
   Serial.begin(9600);
 
+  screen.begin();
+  screen.clear();
+  screen.setBrightness(10);
+
   CURRENT_ARRAY = PLAYER_ARRAY;
-
-  // Verify the array reading navigation functionality
-  debugCurrentArray();
-  changeArray();
-  debugCurrentArray();
-
-  // Verify the LED array functionality
-  displayCurrentArray();
-  changeArray();
-  displayCurrentArray();
 }
 
 void loop()
 {
+  // Verify the array reading navigation functionality
+  debugCurrentArray();
+  displayCurrentArray();
   
+  changeArray();
+  delay(1000);
+  
+  debugCurrentArray();
+  displayCurrentArray();
+
+  changeArray();
+  delay(1000);
 }
 
 void displayCurrentArray()
 {
-  for(int i = 0 ; i < GAME_BOARD_SIZE ; i++)
+  screen.clear();
+  for(int i = 0 ; i < GAME_BOARD_SIDE_SIZE ; i++)
   {
-    for(int j = 0 ; j < GAME_BOARD_SIZE ; j++)
+    for(int j = 0 ; j < GAME_BOARD_SIDE_SIZE ; j++)
     {
-      
+      int coord = j + GAME_BOARD_SIDE_SIZE * i;
+      if(CURRENT_ARRAY[coord]) screen.setPixelColor(coord, 255, 0, 0);
     }
   }
+  screen.show();
 }
 
 void debugCurrentArray()
 {
-  for (int i = 0 ; i < GAME_BOARD_SIZE ; i++)
+  for (int i = 0 ; i < GAME_BOARD_SIDE_SIZE ; i++)
   {
-    for (int j = 0 ; j < GAME_BOARD_SIZE ; j++)
+    for (int j = 0 ; j < GAME_BOARD_SIDE_SIZE ; j++)
     {
-      Serial.print(CURRENT_ARRAY[j + GAME_BOARD_SIZE * i] ? '#' : '~');
+      Serial.print(CURRENT_ARRAY[j + GAME_BOARD_SIDE_SIZE * i] ? '#' : '~');
     }
     Serial.print("\n");
   }
@@ -64,8 +79,8 @@ void changeArray()
 
 bool playOn(int x, int y)
 {
-  if (OPPONENT_ARRAY[y + GAME_BOARD_SIZE * x] == true) return false; 
+  if (OPPONENT_ARRAY[y + GAME_BOARD_SIDE_SIZE * x] == true) return false; 
   
-  OPPONENT_ARRAY[y + GAME_BOARD_SIZE * x] = true;
+  OPPONENT_ARRAY[y + GAME_BOARD_SIDE_SIZE * x] = true;
   return true;
 }

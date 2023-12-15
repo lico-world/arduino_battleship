@@ -55,8 +55,10 @@ void loop()
     waitOpponentPlay();
   }
 
-  displayCurrentArray(true);
-  debugCurrentArray();
+  displayCurrentArray();
+  delay(1000);
+
+  // debugCurrentArray();
   changeArray(); // Change turn
 }
 
@@ -71,8 +73,10 @@ void waitOpponentPlay()
   }while(PLAYER_ARRAY[y + GAME_BOARD_SIDE_SIZE * x]);
 
   PLAYER_ARRAY[y + GAME_BOARD_SIDE_SIZE * x] = true;
-
-  delay(500);
+  
+  displayCurrentArray();
+  screen.show();
+  delay(1500);
 }
 
 int waitInput(ORIENTATION orientation)
@@ -92,9 +96,9 @@ int waitInput(ORIENTATION orientation)
 }
 
 // 'displayFlag' is used to disable clear and show calls (useful for drawLine)
-void displayCurrentArray(bool displayFlag)
+void displayCurrentArray()
 {
-  if(displayFlag) screen.clear();
+  screen.clear();
   for(int i = 0 ; i < GAME_BOARD_SIDE_SIZE ; i++)
   {
     for(int j = 0 ; j < GAME_BOARD_SIDE_SIZE ; j++)
@@ -105,7 +109,7 @@ void displayCurrentArray(bool displayFlag)
       if(CURRENT_ARRAY[coord]) screen.setPixelColor(coord, 127, 0, 0);
     }
   }
-  if(displayFlag) screen.show();
+  screen.show();
 }
 
 void debugCurrentArray()
@@ -127,8 +131,7 @@ void changeArray()
   isPlayerTurn = !isPlayerTurn;
 
   // Select the good array
-  if(!isPlayerTurn) CURRENT_ARRAY = PLAYER_ARRAY;
-  else CURRENT_ARRAY = OPPONENT_ARRAY;
+  CURRENT_ARRAY = isPlayerTurn ? OPPONENT_ARRAY : PLAYER_ARRAY;
 }
 
 bool playOn(int x, int y)
@@ -144,7 +147,7 @@ bool playOn(int x, int y)
 void drawLine(int linePosition, ORIENTATION orientation)
 {
   // Display the already played locations
-  displayCurrentArray(true);
+  displayCurrentArray();
 
   // Since it's always VERTICAL then HORIZONTAL
   // Display the first line when the second on is moving
